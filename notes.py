@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
 import tkinter as tk
 from tkinter import ttk, messagebox
 import json, os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def Help():
     # Message box of keybind info
@@ -70,7 +73,6 @@ def OpenFile():
                 print(f"Failed to load {fname}: {e}")
 
     def onOpen(event):
-        
         result = messagebox.askyesno("Are you Sure?", "Are you sure you want to open this file", detail="Any unsaved data will be lost!", icon="info", default="no")
         if result:
             # clean texts and entries
@@ -104,7 +106,7 @@ def OpenFile():
             top.destroy()
             return
 
-    tree.bind("<Double-1>", onOpen)
+    tree.bind("<Double-Button-1>", onOpen)
 
 def newFile():
     # Ask user if they are sure to make a new file
@@ -139,7 +141,12 @@ def save():
     # Update data from Tkinter entries
     data["title"] = fileName
     data["desc"] = desc.get("1.0", "end-1c")
-    data["text"] = text.get("1.0", "end-1c").splitlines()
+    textspre = text.get("1.0", "end-1c").splitlines()
+    texts=[]
+    for i in texts:
+        texts.append(i+"\n")
+    data["text"] = texts
+    
 
     # Make sure directory exists
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -153,12 +160,11 @@ def save():
 version = 1.0
 build = "2.10.2026"
 
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 icon_path = os.path.join(BASE_DIR, "Assets/notes/NoteLogo.png")
 
 # window ini
 root = tk.Tk()
+root.update()
 root.title("Notes")
 root.geometry("480x320")
 root.attributes("-fullscreen", True)
@@ -242,6 +248,10 @@ b.grid(row=1, column=0, sticky="ws")
 # main textbox
 text = tk.Text(main, font=("Arial"))
 text.grid(row=0, column=0, sticky="news")
+
+scrollbar = tk.Scrollbar(root, command=text.yview)
+scrollbar.grid(row=0, column=1, sticky="nes")
+text.config(yscrollcommand=scrollbar.set)
 
 
 root.mainloop()
