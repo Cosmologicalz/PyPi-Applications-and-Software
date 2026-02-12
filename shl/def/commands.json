@@ -1,0 +1,4 @@
+{
+    "base" : ["path", "name", "author", "version"],
+    "pipit" : ["shl/def/pipit.pps-c", "pipit", "cosmologicalz", "n/a"]
+}
