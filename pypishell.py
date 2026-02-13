@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import time, gdown, os, shutil, json
 from time import sleep
 from ast import literal_eval
@@ -15,9 +16,12 @@ try:
         
         if request == "":
             continue
+            
+        if request == "exit" or request == "quit":
+            exit()
         
         try:
-            with open("shl/def/commands.json", "r") as f:
+            with open("/home/cosmologicalz/files/PyPi/shl/def/commands.json", "r") as f:
                 data = json.load(f)
              
             if request not in data:
@@ -28,7 +32,9 @@ try:
             
             with open(commandFile, "r") as f: 
                 lines = f.readlines()
-                
+        except FileNotFoundError as e:
+            print(e)
+            continue
         except Exception as e:
             print("command not recognized")         
             continue
